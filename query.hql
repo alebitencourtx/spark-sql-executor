@@ -1,1 +1,1 @@
-select * from lpd.cadastro_pf_test limit 1;
+select * from db.table limit 1;
