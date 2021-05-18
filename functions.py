@@ -30,8 +30,3 @@ def exec_spark_sql(path_to_file,spark_hive):
     except Exception as e:
         print('Failed : ' + str(e))
     
-def soma(a,b):
-    return a+b
-
-def subtr(a,b):
-    return a-b
