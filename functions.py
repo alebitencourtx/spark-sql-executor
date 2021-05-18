@@ -29,3 +29,6 @@ def exec_spark_sql(path_to_file,spark_hive):
         print(df.cache().count())
     except Exception as e:
         print('Failed : ' + str(e))
+    
+def soma(a,b):
+    return a+b
