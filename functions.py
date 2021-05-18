@@ -32,3 +32,6 @@ def exec_spark_sql(path_to_file,spark_hive):
     
 def soma(a,b):
     return a+b
+
+def subtr(a,b):
+    return a-b
