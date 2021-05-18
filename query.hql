@@ -1,1 +1,1 @@
-select * from db.table limit 1;
+select sum(Survived) from titanic;
