@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- codingt: utf-8 -*-
 
-from os.path import abspath
 from pyspark.sql import SparkSession
-from pyspark.sql import HiveContext
 from pyspark import SparkConf, SparkContext, SparkFiles
 
 import sys
@@ -18,23 +16,24 @@ if len(sys.argv) > 1:
     path_hql_file = sys.argv[1]
 
 
-spark = SparkSession.builder \
-    .config("spark.sql.parquet.writeLegacyFormat", True) \
-    .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
-    .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true") \
-    .config("spark.sql.autoBroadcastJoinThreshold", "-1") \
-    .config("spark.shuffle.service.enabled", True) \
+if len(sys.argv) > 2:
+    CAMINHO = sys.argv[2]
+
+if len(sys.argv) > 3:
+    TABLE = sys.argv[3]
+
+spark = SparkSession.builder.config("spark.shuffle.service.enabled", True) \
     .enableHiveSupport() \
     .config("spark.sql.hive.caseSensitiveInferenceMode", "INFER_ONLY") \
     .getOrCreate()
 
-spark.sparkContext.setLogLevel("ERROR")
-spark.conf.set("hive.exec.dynamic.partition.mode", "nonstrict")
-spark.conf.set("hive.exec.dynamic.partition", "true")
+
 
 spark.sparkContext.addFile('./functions.py')
 sys.path.insert(0, SparkFiles.getRootDirectory())
 
 from functions import *
 
+df = spark.read.format('csv').options(header='true').load(CAMINHO)
+df.createOrReplaceTempView(TABLE)
 exec_spark_sql(path_hql_file,spark)
